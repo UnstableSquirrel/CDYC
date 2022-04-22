@@ -321,17 +321,31 @@
         let button = document.getElementsByClassName("button-82-pushable")[0]
 
         const canvas = document.getElementById("canvas")
-                    const context = canvas.getContext("2d")
-                    canvas.width = 500
-                    canvas.height = 500
+            const context = canvas.getContext("2d")
+            canvas.width = 500
+            canvas.height = 500
+       
+
+
+        /*const canvas = document.getElementById("canvas")
+        const context = canvas.getContext("2d")
+        canvas.width = 500
+        canvas.height = 500*/
 
         let l1 = new Image()
+        l1.crossOrigin = "Anonymous"
         let l2 = new Image()
+        l2.crossOrigin = "Anonymous"
         let l3 = new Image()
+        l3.crossOrigin = "Anonymous"
         let l4 = new Image()
+        l4.crossOrigin = "Anonymous"
         let l5 = new Image()
+        l5.crossOrigin = "Anonymous"
         let l6 = new Image()
+        l6.crossOrigin = "Anonymous"
         let l7 = new Image()
+        l7.crossOrigin = "Anonymous"
  
 
         button.addEventListener("click", update)
@@ -453,6 +467,29 @@
                     build()
                 }
         }
+
+
+        function downloadCanvas() {  
+            
+            // get canvas data  
+            let image = canvas.toDataURL() 
+        
+            // create temporary link  
+            let tmpLink = document.createElement( 'a' )  
+            tmpLink.download = 'image.png' // set the name of the download file 
+            tmpLink.href = image  
+        
+            // temporarily add link to body and initiate the download  
+            document.body.appendChild( tmpLink )  
+            tmpLink.click()
+            document.body.removeChild( tmpLink ) 
+        }
+
+        canvas.addEventListener("click", downloadCanvas)
+
+        console.log(image, tmpLink)
+
+
         
 
     </script>

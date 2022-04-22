@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Layer Kit by KB</title>
+
+    <style>
+
+        @font-face {
+            font-family: "Montserrat";
+            src: url("fonts/Montserrat/Montserrat-VariableFont_wght.ttf") format("truetype"),
+                url("fonts/Merriweather_Sans/MerriweatherSans-Italic-VariableFont_wght.ttf") format("truetype");
+            font-weight: 100 1000;
+        }
+
+        html, body {
+            padding: 0px;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        body {
+            /*background-image: linear-gradient(to right, #141e30, #243b55);*/
+            /*background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);*/
+            /*background-image: linear-gradient(to right, #434343 0%, black 100%);*
+            /*background-image: linear-gradient( 95.2deg, rgba(173,252,234,1) 26.8%, rgba(192,229,246,1) 64% );*/
+            /*background-image: linear-gradient(to right, #8e2de2, #4a00e0);*/
+
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .container {
+            display: grid;
+
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid rgb(92, 92, 92);
+            border-radius: 15px;
+            margin: 20px 0px 30px 0px;
+            width: 500px;
+            height: 500px;
+            background-color: grey;
+        }
+
+        .wrapper {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            height: 800px;
+            text-align: center;
+        }
+
+        .wrapper > div:nth-child(1) {
+            margin-top: 20px;
+        }
+
+
+
+
+
+/*--------- Button -------------------------------------------*/
+
+        .button-82-pushable {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            outline-offset: 4px;
+            transition: filter 250ms;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .button-82-shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: hsl(0deg 0% 0% / 0.25);
+            will-change: transform;
+            transform: translateY(2px);
+            transition:
+                transform
+                600ms
+                cubic-bezier(.3, .7, .4, 1);
+        }
+
+        .button-82-edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(
+                to left,
+                hsl(340deg 100% 16%) 0%,
+                hsl(340deg 100% 32%) 8%,
+                hsl(340deg 100% 32%) 92%,
+                hsl(340deg 100% 16%) 100%
+        );
+        }
+
+        .button-82-front {
+            display: block;
+            position: relative;
+            padding: 12px 27px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: white;
+            background: hsl(345deg 100% 47%);
+            will-change: transform;
+            transform: translateY(-4px);
+            transition:
+                transform
+                600ms
+                cubic-bezier(.3, .7, .4, 1);
+        }
+
+        @media (min-width: 768px) {
+            .button-82-front {
+                font-size: 1.25rem;
+                padding: 12px 42px;
+            }
+        }
+
+        .button-82-pushable:hover {
+            filter: brightness(110%);
+            -webkit-filter: brightness(110%);
+        }
+
+        .button-82-pushable:hover .button-82-front {
+            transform: translateY(-6px);
+            transition:
+                transform
+                250ms
+                cubic-bezier(.3, .7, .4, 1.5);
+        }
+
+        .button-82-pushable:active .button-82-front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
+
+        .button-82-pushable:hover .button-82-shadow {
+            transform: translateY(4px);
+            transition:
+                transform
+                250ms
+                cubic-bezier(.3, .7, .4, 1.5);
+        }
+
+        .button-82-pushable:active .button-82-shadow {
+            transform: translateY(1px);
+            transition: transform 34ms;
+        }
+
+        .button-82-pushable:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+/*--------- Button End -------------------------------------------*/
+
+
+
+
+
+        h1 {
+            color: rgb(255, 255, 255);
+            text-shadow: 1py solid rgb(141, 141, 141);
+        }
+
+        * {
+            font-family: "Montserrat";
+            font-weight: 700;
+        }
+
+        @media (min-width: 480px) and (max-width: 600px) {
+
+            canvas {
+            width: 400px;
+            height: 400px;
+            }
+
+            .wrapper {
+                display: grid;
+                justify-content: center;
+                align-items: center;
+                height: 700px;
+                text-align: center;
+            }
+
+        }
+
+        @media (min-width: 350px) and (max-width: 479px) {
+
+            canvas {
+                width: 300px;
+                height: 300px;
+            }
+
+            .wrapper {
+                display: grid;
+                justify-content: center;
+                align-items: center;
+                height: 550px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+        }
+
+        @media (min-width: 300px) and (max-width: 349px) {
+
+            canvas {
+                width: 270px;
+                height: 270px;
+            }
+
+            .wrapper {
+                display: grid;
+                justify-content: center;
+                align-items: center;
+                height: 500px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+
+        @media (min-width: 265px) and (max-width: 299px) {
+
+            canvas {
+                width: 240px;
+                height: 240px;
+            }
+
+            .wrapper {
+                display: grid;
+                justify-content: center;
+                align-items: center;
+                height: 450px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+        }
+
+        @media (min-width: 0px) and (max-width: 264px) {
+
+            canvas {
+                width: 200px;
+                height: 200px;
+            }
+
+            .wrapper {
+                display: grid;
+                justify-content: center;
+                align-items: center;
+                height: 400px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="wrapper">
+
+            <div>
+                <h1>Chad Dogira Yacht Club</h1>
+            </div>
+            <div class="canvas-container">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div id="button-container">
+                <button class="button-82-pushable" role="button">
+                    <span class="button-82-shadow"></span>
+                    <span class="button-82-edge"></span>
+                    <span class="button-82-front text">
+                      Generate
+                    </span>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <script>
+
+        let button = document.getElementsByClassName("button-82-pushable")[0]
+
+        const canvas = document.getElementById("canvas")
+                    const context = canvas.getContext("2d")
+                    canvas.width = 500
+                    canvas.height = 500
+
+        let l1 = new Image()
+        let l2 = new Image()
+        let l3 = new Image()
+        let l4 = new Image()
+        let l5 = new Image()
+        let l6 = new Image()
+        let l7 = new Image()
+
+        const layer1 = [
+
+                    {src: "img/CDYC Layers/Layer1/1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer1/2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer1/3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer1/4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer1/5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer1/6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer1/7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer1/8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer1/9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer1/10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer1/11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer1/12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer1/13.png", id: 13},
+                    {src: "img/CDYC Layers/Layer1/14.png", id: 14},
+                    {src: "img/CDYC Layers/Layer1/15.png", id: 15},
+                    {src: "img/CDYC Layers/Layer1/16.png", id: 16},
+                    {src: "img/CDYC Layers/Layer1/17.png", id: 17},
+                    {src: "img/CDYC Layers/Layer1/18.png", id: 18},
+                    {src: "img/CDYC Layers/Layer1/19.png", id: 19},
+                    {src: "img/CDYC Layers/Layer1/20.png", id: 20},
+
+                    {src: "img/CDYC Layers/Layer1/21.png", id: 21},
+                    {src: "img/CDYC Layers/Layer1/22.png", id: 22},
+                    {src: "img/CDYC Layers/Layer1/23.png", id: 23},
+                    {src: "img/CDYC Layers/Layer1/24.png", id: 24},
+                    {src: "img/CDYC Layers/Layer1/25.png", id: 25},
+                    {src: "img/CDYC Layers/Layer1/26.png", id: 26},
+                    {src: "img/CDYC Layers/Layer1/27.png", id: 27},
+                    {src: "img/CDYC Layers/Layer1/28.png", id: 28},
+                    {src: "img/CDYC Layers/Layer1/29.png", id: 29},
+                    {src: "img/CDYC Layers/Layer1/30.png", id: 30},
+                    
+                    {src: "img/CDYC Layers/Layer1/31.png", id: 31},
+                    {src: "img/CDYC Layers/Layer1/32.png", id: 32},
+                    {src: "img/CDYC Layers/Layer1/33.png", id: 33},
+                    {src: "img/CDYC Layers/Layer1/34.png", id: 34},
+                    {src: "img/CDYC Layers/Layer1/35.png", id: 35},
+                    {src: "img/CDYC Layers/Layer1/36.png", id: 36},
+                    {src: "img/CDYC Layers/Layer1/37.png", id: 37},
+                    {src: "img/CDYC Layers/Layer1/38.png", id: 38},
+                    {src: "img/CDYC Layers/Layer1/39.png", id: 39},
+                    {src: "img/CDYC Layers/Layer1/40.png", id: 40},
+
+                    {src: "img/CDYC Layers/Layer1/41.png", id: 41},
+                    {src: "img/CDYC Layers/Layer1/42.png", id: 42},
+                    {src: "img/CDYC Layers/Layer1/43.png", id: 43},
+                    {src: "img/CDYC Layers/Layer1/44.png", id: 44},
+                    {src: "img/CDYC Layers/Layer1/45.png", id: 45},
+                    {src: "img/CDYC Layers/Layer1/46.png", id: 46},
+                    {src: "img/CDYC Layers/Layer1/47.png", id: 47},
+                    {src: "img/CDYC Layers/Layer1/48.png", id: 48},
+                    {src: "img/CDYC Layers/Layer1/49.png", id: 49},
+                    {src: "img/CDYC Layers/Layer1/50.png", id: 50},
+
+                    {src: "img/CDYC Layers/Layer1/51.png", id: 51},
+                    {src: "img/CDYC Layers/Layer1/52.png", id: 52},
+                    {src: "img/CDYC Layers/Layer1/53.png", id: 53},
+                    {src: "img/CDYC Layers/Layer1/54.png", id: 54},
+                    {src: "img/CDYC Layers/Layer1/55.png", id: 55},
+                    {src: "img/CDYC Layers/Layer1/56.png", id: 56},
+                    {src: "img/CDYC Layers/Layer1/57.png", id: 57},
+                    {src: "img/CDYC Layers/Layer1/58.png", id: 58},
+                    {src: "img/CDYC Layers/Layer1/59.png", id: 59},
+                    {src: "img/CDYC Layers/Layer1/60.png", id: 60},
+
+                    {src: "img/CDYC Layers/Layer1/61.png", id: 61},
+                    {src: "img/CDYC Layers/Layer1/62.png", id: 62},
+                    {src: "img/CDYC Layers/Layer1/63.png", id: 63},
+                    {src: "img/CDYC Layers/Layer1/64.png", id: 64},
+                    {src: "img/CDYC Layers/Layer1/65.png", id: 65},
+                    {src: "img/CDYC Layers/Layer1/66.png", id: 66},
+                    {src: "img/CDYC Layers/Layer1/67.png", id: 67},
+                    {src: "img/CDYC Layers/Layer1/68.png", id: 68},
+                    {src: "img/CDYC Layers/Layer1/69.png", id: 69},
+                    {src: "img/CDYC Layers/Layer1/70.png", id: 70},
+
+                    {src: "img/CDYC Layers/Layer1/71.png", id: 71},
+                    {src: "img/CDYC Layers/Layer1/72.png", id: 72},
+                    {src: "img/CDYC Layers/Layer1/73.png", id: 73},
+                    {src: "img/CDYC Layers/Layer1/74.png", id: 74},
+                    {src: "img/CDYC Layers/Layer1/75.png", id: 75},
+                    {src: "img/CDYC Layers/Layer1/76.png", id: 76},
+                    {src: "img/CDYC Layers/Layer1/77.png", id: 77},
+                    {src: "img/CDYC Layers/Layer1/78.png", id: 78},
+                    {src: "img/CDYC Layers/Layer1/79.png", id: 79},
+                    {src: "img/CDYC Layers/Layer1/80.png", id: 80},
+
+                    {src: "img/CDYC Layers/Layer1/81.png", id: 81},
+                    {src: "img/CDYC Layers/Layer1/82.png", id: 82},
+                    {src: "img/CDYC Layers/Layer1/83.png", id: 83},
+                    {src: "img/CDYC Layers/Layer1/84.png", id: 84},
+                    {src: "img/CDYC Layers/Layer1/85.png", id: 85},
+                    {src: "img/CDYC Layers/Layer1/86.png", id: 86},
+                    {src: "img/CDYC Layers/Layer1/87.png", id: 87},
+                    {src: "img/CDYC Layers/Layer1/88.png", id: 88},
+                    {src: "img/CDYC Layers/Layer1/89.png", id: 89},
+                    {src: "img/CDYC Layers/Layer1/90.png", id: 90},
+
+                ]
+
+        const layer2 = [
+
+                    {src: "img/CDYC Layers/Layer2/Dogira1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer2/G2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer2/G3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer2/G4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer2/G5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer2/G6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer2/G7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer2/G8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer2/G9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer2/G10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer2/G11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer2/G12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer2/G13.png", id: 13},
+                    {src: "img/CDYC Layers/Layer2/G14.png", id: 14},
+                    {src: "img/CDYC Layers/Layer2/G15.png", id: 15},
+                    {src: "img/CDYC Layers/Layer2/G16.png", id: 16},
+                    {src: "img/CDYC Layers/Layer2/G17.png", id: 17},
+                    {src: "img/CDYC Layers/Layer2/G18.png", id: 18},
+                    {src: "img/CDYC Layers/Layer2/G19.png", id: 19},
+                    {src: "img/CDYC Layers/Layer2/G20.png", id: 20},
+
+                    {src: "img/CDYC Layers/Layer2/G21.png", id: 21},
+                    {src: "img/CDYC Layers/Layer2/G22.png", id: 22},
+                    {src: "img/CDYC Layers/Layer2/G23.png", id: 23},
+                    {src: "img/CDYC Layers/Layer2/G24.png", id: 24},
+                    {src: "img/CDYC Layers/Layer2/G25.png", id: 25},
+                    {src: "img/CDYC Layers/Layer2/G26.png", id: 26},
+                    {src: "img/CDYC Layers/Layer2/G27.png", id: 27},
+                    {src: "img/CDYC Layers/Layer2/G28.png", id: 28},
+                    {src: "img/CDYC Layers/Layer2/G29.png", id: 29},
+                    {src: "img/CDYC Layers/Layer2/G30.png", id: 30},
+                    
+                    {src: "img/CDYC Layers/Layer2/G31.png", id: 31},
+                    {src: "img/CDYC Layers/Layer2/G32.png", id: 32},
+                    {src: "img/CDYC Layers/Layer2/G33.png", id: 33},
+                    {src: "img/CDYC Layers/Layer2/G34.png", id: 34},
+                    {src: "img/CDYC Layers/Layer2/G35.png", id: 35},
+                    {src: "img/CDYC Layers/Layer2/G36.png", id: 36},
+                    {src: "img/CDYC Layers/Layer2/G37.png", id: 37},
+                    {src: "img/CDYC Layers/Layer2/G38.png", id: 38},
+                    {src: "img/CDYC Layers/Layer2/G39.png", id: 39},
+                    {src: "img/CDYC Layers/Layer2/G40.png", id: 40},
+
+                    {src: "img/CDYC Layers/Layer2/G41.png", id: 41},
+                    {src: "img/CDYC Layers/Layer2/G42.png", id: 42},
+                    {src: "img/CDYC Layers/Layer2/G43.png", id: 43},
+                    {src: "img/CDYC Layers/Layer2/G44.png", id: 44},
+                    {src: "img/CDYC Layers/Layer2/G45.png", id: 45},
+                    {src: "img/CDYC Layers/Layer2/G46.png", id: 46},
+                    {src: "img/CDYC Layers/Layer2/G47.png", id: 47},
+                    {src: "img/CDYC Layers/Layer2/G48.png", id: 48},
+                    {src: "img/CDYC Layers/Layer2/G49.png", id: 49},
+                    {src: "img/CDYC Layers/Layer2/G50.png", id: 50},
+
+                    {src: "img/CDYC Layers/Layer2/G51.png", id: 51},
+                    {src: "img/CDYC Layers/Layer2/G52.png", id: 52},
+                    {src: "img/CDYC Layers/Layer2/G53.png", id: 53},
+                    {src: "img/CDYC Layers/Layer2/G54.png", id: 54},
+                    {src: "img/CDYC Layers/Layer2/G55.png", id: 55},
+                    {src: "img/CDYC Layers/Layer2/G56.png", id: 56},
+                    {src: "img/CDYC Layers/Layer2/G57.png", id: 57},
+                    {src: "img/CDYC Layers/Layer2/G58.png", id: 58},
+                    {src: "img/CDYC Layers/Layer2/G59.png", id: 59},
+                    {src: "img/CDYC Layers/Layer2/G60.png", id: 60},
+
+                    {src: "img/CDYC Layers/Layer2/G61.png", id: 61},
+                    {src: "img/CDYC Layers/Layer2/G62.png", id: 62},
+                    {src: "img/CDYC Layers/Layer2/G63.png", id: 63},
+                    {src: "img/CDYC Layers/Layer2/G64.png", id: 64},
+                    {src: "img/CDYC Layers/Layer2/G65.png", id: 65},
+                    {src: "img/CDYC Layers/Layer2/G66.png", id: 66},
+                    {src: "img/CDYC Layers/Layer2/G67.png", id: 67},
+                    {src: "img/CDYC Layers/Layer2/G68.png", id: 68},
+                    {src: "img/CDYC Layers/Layer2/G69.png", id: 69},
+                    {src: "img/CDYC Layers/Layer2/G70.png", id: 70},
+                ]
+
+        const layer3 = [
+
+                    {src: "img/CDYC Layers/layer3/1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer3/2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer3/3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer3/4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer3/5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer3/6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer3/7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer3/8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer3/9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer3/10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer3/11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer3/12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer3/13.png", id: 13},
+                    {src: "img/CDYC Layers/Layer3/14.png", id: 14},
+                    {src: "img/CDYC Layers/Layer3/15.png", id: 15},
+                    {src: "img/CDYC Layers/Layer3/16.png", id: 16},
+                    {src: "img/CDYC Layers/Layer3/17.png", id: 17},
+                    {src: "img/CDYC Layers/Layer3/18.png", id: 18},
+                    {src: "img/CDYC Layers/Layer3/19.png", id: 19},
+                    {src: "img/CDYC Layers/Layer3/20.png", id: 20},
+
+                    {src: "img/CDYC Layers/Layer3/21.png", id: 21},
+                    {src: "img/CDYC Layers/layer3/22.png", id: 22},
+                    {src: "img/CDYC Layers/Layer3/23.png", id: 23},
+                    {src: "img/CDYC Layers/Layer3/24.png", id: 24},
+                    {src: "img/CDYC Layers/Layer3/25.png", id: 25},
+                    {src: "img/CDYC Layers/Layer3/26.png", id: 26},
+                    {src: "img/CDYC Layers/Layer3/27.png", id: 27},
+                    {src: "img/CDYC Layers/Layer3/28.png", id: 28},
+                    {src: "img/CDYC Layers/Layer3/29.png", id: 29},
+                    {src: "img/CDYC Layers/Layer3/30.png", id: 30},
+                    
+                    {src: "img/CDYC Layers/Layer3/31.png", id: 31},
+                    {src: "img/CDYC Layers/Layer3/32.png", id: 32},
+                    {src: "img/CDYC Layers/Layer3/33.png", id: 33},
+                    {src: "img/CDYC Layers/Layer3/34.png", id: 34},
+                    {src: "img/CDYC Layers/Layer3/35.png", id: 35},
+                    {src: "img/CDYC Layers/Layer3/36.png", id: 36},
+                    {src: "img/CDYC Layers/Layer3/37.png", id: 37},
+                    {src: "img/CDYC Layers/Layer3/38.png", id: 38},
+                    {src: "img/CDYC Layers/Layer3/39.png", id: 39},
+                    {src: "img/CDYC Layers/Layer3/40.png", id: 40},
+
+                    {src: "img/CDYC Layers/Layer3/41.png", id: 41},
+                    {src: "img/CDYC Layers/Layer3/42.png", id: 42},
+                    {src: "img/CDYC Layers/Layer3/43.png", id: 43},
+                ]
+
+        const layer4 = [
+
+                    {src: "img/CDYC Layers/Layer4/1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer4/2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer4/3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer4/4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer4/5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer4/6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer4/7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer4/8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer4/9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer4/10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer4/11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer4/12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer4/13.png", id: 13},
+                    {src: "img/CDYC Layers/Layer4/14.png", id: 14},
+                    {src: "img/CDYC Layers/Layer4/15.png", id: 15},
+                    {src: "img/CDYC Layers/Layer4/16.png", id: 16},
+                    {src: "img/CDYC Layers/Layer4/17.png", id: 17},
+                    {src: "img/CDYC Layers/Layer4/18.png", id: 18},
+                    {src: "img/CDYC Layers/Layer4/19.png", id: 19},
+                    {src: "img/CDYC Layers/Layer4/20.png", id: 20},
+
+                    {src: "img/CDYC Layers/Layer4/21.png", id: 21},
+                    {src: "img/CDYC Layers/Layer4/22.png", id: 22},
+                    {src: "img/CDYC Layers/Layer4/23.png", id: 23},
+                    {src: "img/CDYC Layers/Layer4/24.png", id: 24},
+                    {src: "img/CDYC Layers/Layer4/25.png", id: 25},
+                    {src: "img/CDYC Layers/Layer4/26.png", id: 26},
+                    {src: "img/CDYC Layers/Layer4/27.png", id: 27},
+                    {src: "img/CDYC Layers/Layer4/28.png", id: 28},
+                    {src: "img/CDYC Layers/Layer4/29.png", id: 29},
+                    {src: "img/CDYC Layers/Layer4/30.png", id: 30},
+                    
+                    {src: "img/CDYC Layers/Layer4/31.png", id: 31},
+                    {src: "img/CDYC Layers/Layer4/32.png", id: 32},
+                    {src: "img/CDYC Layers/Layer4/33.png", id: 33},
+                    {src: "img/CDYC Layers/Layer4/34.png", id: 34},
+                    {src: "img/CDYC Layers/Layer4/35.png", id: 35},
+                    {src: "img/CDYC Layers/Layer4/36.png", id: 36},
+                    {src: "img/CDYC Layers/Layer4/37.png", id: 37},
+                    {src: "img/CDYC Layers/Layer4/38.png", id: 38},
+                    {src: "img/CDYC Layers/Layer4/39.png", id: 39},
+                    {src: "img/CDYC Layers/Layer4/40.png", id: 40},
+
+                    {src: "img/CDYC Layers/Layer4/41.png", id: 41},
+                    {src: "img/CDYC Layers/Layer4/42.png", id: 42},
+                    {src: "img/CDYC Layers/Layer4/43.png", id: 43},
+                    {src: "img/CDYC Layers/Layer4/44.png", id: 44},
+                    {src: "img/CDYC Layers/Layer4/45.png", id: 45},
+                    {src: "img/CDYC Layers/Layer4/46.png", id: 46},
+                    {src: "img/CDYC Layers/Layer4/47.png", id: 47},
+                    {src: "img/CDYC Layers/Layer4/48.png", id: 48},
+                    {src: "img/CDYC Layers/Layer4/49.png", id: 49},
+                    {src: "img/CDYC Layers/Layer4/50.png", id: 50},
+                ]
+
+        const layer5 = [
+
+                    {src: "img/CDYC Layers/Layer5/1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer5/2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer5/3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer5/4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer5/5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer5/6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer5/7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer5/8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer5/9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer5/10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer5/11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer5/12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer5/13.png", id: 13},
+                    {src: "img/CDYC Layers/Layer5/14.png", id: 14},
+                    {src: "img/CDYC Layers/Layer5/15.png", id: 15},
+                    {src: "img/CDYC Layers/Layer5/16.png", id: 16},
+                ]
+
+        const layer6 = [
+
+                    {src: "img/CDYC Layers/Layer6/1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer6/2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer6/3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer6/4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer6/5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer6/6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer6/7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer6/8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer6/9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer6/10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer6/11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer6/12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer6/13.png", id: 13},
+                ]
+
+        const layer7 = [
+
+                    {src: "img/CDYC Layers/Layer7/1.png", id: 1},
+                    {src: "img/CDYC Layers/Layer7/2.png", id: 2},
+                    {src: "img/CDYC Layers/Layer7/3.png", id: 3},
+                    {src: "img/CDYC Layers/Layer7/4.png", id: 4},
+                    {src: "img/CDYC Layers/Layer7/5.png", id: 5},
+                    {src: "img/CDYC Layers/Layer7/6.png", id: 6},
+                    {src: "img/CDYC Layers/Layer7/7.png", id: 7},
+                    {src: "img/CDYC Layers/Layer7/8.png", id: 8},
+                    {src: "img/CDYC Layers/Layer7/9.png", id: 9},
+                    {src: "img/CDYC Layers/Layer7/10.png", id: 10},
+
+                    {src: "img/CDYC Layers/Layer7/11.png", id: 11},
+                    {src: "img/CDYC Layers/Layer7/12.png", id: 12},
+                    {src: "img/CDYC Layers/Layer7/13.png", id: 13},
+                    {src: "img/CDYC Layers/Layer7/14.png", id: 14},
+                    {src: "img/CDYC Layers/Layer7/15.png", id: 15},
+                    {src: "img/CDYC Layers/Layer7/16.png", id: 16},
+                    {src: "img/CDYC Layers/Layer7/17.png", id: 17},
+                    {src: "img/CDYC Layers/Layer7/18.png", id: 18},
+                    {src: "img/CDYC Layers/Layer7/19.png", id: 19},
+                    {src: "img/CDYC Layers/Layer7/20.png", id: 20},
+
+                    {src: "img/CDYC Layers/Layer7/21.png", id: 21},
+                    {src: "img/CDYC Layers/Layer7/22.png", id: 22},
+                    {src: "img/CDYC Layers/Layer7/23.png", id: 23},
+                    {src: "img/CDYC Layers/Layer7/24.png", id: 24},
+                    {src: "img/CDYC Layers/Layer7/25.png", id: 25},
+                    {src: "img/CDYC Layers/Layer7/26.png", id: 26},
+                    {src: "img/CDYC Layers/Layer7/27.png", id: 27},
+                    {src: "img/CDYC Layers/Layer7/28.png", id: 28},
+                    {src: "img/CDYC Layers/Layer7/29.png", id: 29},
+                    {src: "img/CDYC Layers/Layer7/30.png", id: 30},
+                ]
+ 
+
+        button.addEventListener("click", update)
+
+        function update() {
+
+                context.clearRect(0, 0, canvas.width, canvas.height)
+
+                ////// Layer 1 //////////////////////////////
+                let x1 = layer1.length 
+                random = Math.floor(Math.random() * x1 + 1)
+
+                layer1.forEach(getSource1)
+
+                function getSource1(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src)
+                        l1.src = src
+                    }
+                }
+                ////// Layer 1 End //////////////////////////
+
+
+                ////// Layer 2 //////////////////////////////
+                let x2 = layer2.length 
+                random = Math.floor(Math.random() * x2 + 1)
+
+                layer2.forEach(getSource2)
+
+                function getSource2(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src)
+                        l2.src = src
+                    }
+                }
+                ////// Layer 2 End //////////////////////////
+
+
+                ////// Layer 3 //////////////////////////////
+                let x3 = layer3.length 
+                random = Math.floor(Math.random() * x3 + 1)
+
+                layer3.forEach(getSource3)
+
+                function getSource3(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src)
+                        l3.src = src
+                    }
+                }
+                ////// Layer 3 End //////////////////////////
+
+
+                ////// Layer 4 //////////////////////////////
+                let x4 = layer4.length 
+                random = Math.floor(Math.random() * x4 + 1)
+
+                layer4.forEach(getSource4)
+
+                function getSource4(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src)
+                        l4.src = src
+                    }
+                }
+                ////// Layer 4 End //////////////////////////
+
+
+                ////// Layer 5 //////////////////////////////
+                let x5 = layer5.length 
+                random = Math.floor(Math.random() * x5 + 1)
+
+                layer5.forEach(getSource5)
+
+                function getSource5(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src + "------")
+                        l5.src = src
+                    }
+                }
+                ////// Layer 5 End //////////////////////////
+
+
+                ////// Layer 6 //////////////////////////////
+                let x6 = layer6.length 
+                random = Math.floor(Math.random() * x6 + 1)
+
+                layer6.forEach(getSource6)
+
+                function getSource6(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src + "------")
+                        l6.src = src
+                    }
+                }
+                ////// Layer 6 End //////////////////////////
+
+
+                ////// Layer 7 //////////////////////////////
+                let x7 = layer7.length 
+                random = Math.floor(Math.random() * x7 + 1)
+
+                layer7.forEach(getSource7)
+
+                function getSource7(index) {
+                    if (index.id == random) {
+                        let src = "" + index.src
+                        //console.log(src + "------")
+                        l7.src = src
+                    }
+                }
+                ////// Layer 7 End //////////////////////////
+
+
+                function build() {
+
+                context.drawImage(l1, 0, 0, 500, 500)
+                context.drawImage(l2, 0, 0, 500, 500)
+                context.drawImage(l3, 0, 0, 500, 500)
+                context.drawImage(l4, 0, 0, 500, 500)
+                context.drawImage(l5, 0, 0, 500, 500)
+                context.drawImage(l6, 0, 0, 500, 500)
+                context.drawImage(l7, 0, 0, 500, 500)
+
+                //console.log(l1, l2, l3, l4, l5)
+                }
+
+
+                l1.onload = function() {
+                    build()
+                }
+
+                l2.onload = function() {
+                    build()
+                }
+
+                l3.onload = function() {
+                    build()
+                }
+
+                l4.onload = function() {
+                    build()
+                }
+
+                l5.onload = function() {
+                    build()
+                }   
+
+                l6.onload = function() {
+                    build()
+                }
+
+                l7.onload = function() {
+                    build()
+                }
+        }
+        
+
+    </script>
+    
+</body>
+</html>
